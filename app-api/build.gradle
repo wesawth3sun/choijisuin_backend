@@ -1,0 +1,7 @@
+plugins {
+	id 'org.springframework.boot' // 실행 가능한 모듈에만 적용
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+}
