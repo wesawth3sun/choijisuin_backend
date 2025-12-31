@@ -11,6 +11,7 @@ import java.util.List;
 
 public interface TransactionRepository {
     void save(Transaction domain);
-    List<Transaction> getHistory(Long accountId, Pageable page);
+    List<Transaction> getHistory(Long accountId, int page, int size);
+
     Money findDailySumByType(Long accountId, LocalDateTime time, TransactionType type);
 }
