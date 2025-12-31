@@ -12,4 +12,5 @@ dependencies {
 
 	implementation project(':common')
 	implementation project(':core-service')
+	implementation project(':infra-jpa')
 }
