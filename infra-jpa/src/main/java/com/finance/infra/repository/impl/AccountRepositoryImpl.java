@@ -6,7 +6,6 @@ import com.finance.infra.entity.AccountEntity;
 import com.finance.infra.mapper.AccountMapper;
 import com.finance.infra.repository.AccountJpaRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
