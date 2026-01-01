@@ -2,8 +2,8 @@ package com.finance.infra.repository.impl;
 
 import com.finance.domain.model.Money;
 import com.finance.domain.model.ScheduledTransfer;
-import com.finance.domain.model.TransferStatus;
-import com.finance.domain.model.TransferType;
+import com.finance.domain.model.e.TransferStatus;
+import com.finance.domain.model.e.TransferType;
 import com.finance.infra.entity.ScheduledTransferEntity;
 import com.finance.infra.repository.ScheduledTransferJpaRepository;
 import org.junit.jupiter.api.DisplayName;

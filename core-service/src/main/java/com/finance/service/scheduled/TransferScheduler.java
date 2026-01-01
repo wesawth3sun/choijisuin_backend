@@ -2,8 +2,8 @@ package com.finance.service.scheduled;
 
 import com.finance.service.TransactionService;
 import com.finance.domain.model.ScheduledTransfer;
-import com.finance.domain.model.TransferStatus;
-import com.finance.domain.model.TransferType;
+import com.finance.domain.model.e.TransferStatus;
+import com.finance.domain.model.e.TransferType;
 import com.finance.domain.repository.ScheduledTransferRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

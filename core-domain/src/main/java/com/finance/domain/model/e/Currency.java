@@ -10,4 +10,12 @@ public enum Currency {
     USD("달러");
 
     private final String description;
+
+    public static Currency toCurrency(String currencyCode) {
+        if (currencyCode.equals("USD")) {
+            return Currency.USD;
+        } else {
+            return Currency.KRW;
+        }
+    }
 }

@@ -2,8 +2,8 @@ package com.finance.domain.repository;
 
 
 import com.finance.domain.model.ScheduledTransfer;
-import com.finance.domain.model.TransferStatus;
-import com.finance.domain.model.TransferType;
+import com.finance.domain.model.e.TransferStatus;
+import com.finance.domain.model.e.TransferType;
 
 import java.time.LocalDateTime;
 import java.util.List;

@@ -27,7 +27,7 @@ public class AccountServiceImpl implements AccountService {
      */
     @Transactional
     @Override
-    public Long registerAccount(String accountNumber, Currency currency) {
+    public Long registerAccount(String accountNumber, String currency) {
         log.info("[ACCOUNT] 계좌 등록 요청: {}", accountNumber);
 
         // 계좌 번호 중복 체크
@@ -36,7 +36,7 @@ public class AccountServiceImpl implements AccountService {
             throw new BusinessException(ErrorCode.ACCOUNT_NUMBER_DUPLICATED);
         }
 
-        Account account = Account.create(accountNumber, currency);
+        Account account = Account.create(accountNumber, Currency.toCurrency(currency));
         Account saved = accountRepository.save(account);
 
         log.info("[ACCOUNT] 계좌 등록 완료: {}", saved);

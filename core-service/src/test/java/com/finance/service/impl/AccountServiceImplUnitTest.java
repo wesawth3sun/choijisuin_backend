@@ -41,7 +41,7 @@ class AccountServiceImplUnitTest {
         void register_success() {
             // given
             String accountNumber = "88889999";
-            Currency currency = Currency.KRW;
+            String currency = "KRW";
 
             // 1. findBy가 아니라 existsBy로 변경 (결과는 false로 설정)
             given(accountRepository.existsByAccountNumber(accountNumber)).willReturn(false);
@@ -66,12 +66,13 @@ class AccountServiceImplUnitTest {
         void register_fail_duplicate() {
             // given
             String accountNumber = "11112222";
+            String currency = "KRW";
 
             // 서비스 로직에서 사용 중인 existsByAccountNumber가 true를 반환하도록 Mock 설정
             given(accountRepository.existsByAccountNumber(accountNumber)).willReturn(true);
 
             // when & then
-            assertThatThrownBy(() -> accountService.registerAccount(accountNumber, Currency.KRW))
+            assertThatThrownBy(() -> accountService.registerAccount(accountNumber, currency))
                     .isInstanceOf(BusinessException.class)
                     .hasMessageContaining(ErrorCode.ACCOUNT_NUMBER_DUPLICATED.getMessageKey());
 

@@ -1,4 +1,4 @@
-package com.finance.domain.model;
+package com.finance.domain.model.e;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,4 +10,12 @@ public enum TransferType {
     MONTHLY("자동");
 
     private final String description;
+
+    public static TransferType toTransferType(String transferTypeCode) {
+        if (transferTypeCode.equals("MONTHLY")) {
+            return TransferType.MONTHLY;
+        } else {
+            return TransferType.ONCE;
+        }
+    }
 }

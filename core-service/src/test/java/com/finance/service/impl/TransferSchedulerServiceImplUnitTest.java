@@ -5,8 +5,8 @@ import com.finance.common.exception.ErrorCode;
 import com.finance.domain.model.Account;
 import com.finance.domain.model.Money;
 import com.finance.domain.model.ScheduledTransfer;
-import com.finance.domain.model.TransferType;
 import com.finance.domain.model.e.Currency;
+import com.finance.domain.model.e.TransferType;
 import com.finance.domain.repository.AccountRepository;
 import com.finance.domain.repository.ScheduledTransferRepository;
 import com.finance.service.dto.ReservationTimeResponse;
@@ -86,7 +86,7 @@ class TransferSchedulerServiceImplUnitTest {
             given(accountRepository.findByAccountNumber("222222")).willReturn(Optional.of(toAccount));
 
             // when
-            transferSchedulerService.saveScheduledTransfer(1L, "222222", amount, TransferType.ONCE, validTime, null);
+            transferSchedulerService.saveScheduledTransfer(1L, "222222", amount, "ONCE", validTime, null);
 
             // then
             verify(scheduledTransferRepository, times(1)).save(any(ScheduledTransfer.class));
@@ -101,7 +101,7 @@ class TransferSchedulerServiceImplUnitTest {
             void fail_from_account_not_found() {
                 given(accountRepository.findById(1L)).willReturn(Optional.empty());
 
-                assertThatThrownBy(() -> transferSchedulerService.saveScheduledTransfer(1L, "222222", amount, TransferType.ONCE, validTime, null))
+                assertThatThrownBy(() -> transferSchedulerService.saveScheduledTransfer(1L, "222222", amount, "ONCE", validTime, null))
                         .isInstanceOf(BusinessException.class)
                         .hasFieldOrPropertyWithValue("errorCode", ErrorCode.ACCOUNT_NOT_FOUND);
             }
@@ -112,7 +112,7 @@ class TransferSchedulerServiceImplUnitTest {
                 given(accountRepository.findById(1L)).willReturn(Optional.of(fromAccount));
                 given(accountRepository.findByAccountNumber("222222")).willReturn(Optional.empty());
 
-                assertThatThrownBy(() -> transferSchedulerService.saveScheduledTransfer(1L, "222222", amount, TransferType.ONCE, validTime, null))
+                assertThatThrownBy(() -> transferSchedulerService.saveScheduledTransfer(1L, "222222", amount, "ONCE", validTime, null))
                         .isInstanceOf(BusinessException.class)
                         .hasFieldOrPropertyWithValue("errorCode", ErrorCode.ACCOUNT_NOT_FOUND);
             }
@@ -124,7 +124,7 @@ class TransferSchedulerServiceImplUnitTest {
                 given(accountRepository.findById(1L)).willReturn(Optional.of(deletedAccount));
                 given(accountRepository.findByAccountNumber("222222")).willReturn(Optional.of(toAccount));
 
-                assertThatThrownBy(() -> transferSchedulerService.saveScheduledTransfer(1L, "222222", amount, TransferType.ONCE, validTime, null))
+                assertThatThrownBy(() -> transferSchedulerService.saveScheduledTransfer(1L, "222222", amount, "ONCE", validTime, null))
                         .isInstanceOf(BusinessException.class)
                         .hasFieldOrPropertyWithValue("errorCode", ErrorCode.ACCOUNT_ALREADY_DELETED);
             }
@@ -136,7 +136,7 @@ class TransferSchedulerServiceImplUnitTest {
                 given(accountRepository.findById(1L)).willReturn(Optional.of(fromAccount));
                 given(accountRepository.findByAccountNumber("222222")).willReturn(Optional.of(deletedToAccount));
 
-                assertThatThrownBy(() -> transferSchedulerService.saveScheduledTransfer(1L, "222222", amount, TransferType.ONCE, validTime, null))
+                assertThatThrownBy(() -> transferSchedulerService.saveScheduledTransfer(1L, "222222", amount, "ONCE", validTime, null))
                         .isInstanceOf(BusinessException.class)
                         .hasFieldOrPropertyWithValue("errorCode", ErrorCode.ACCOUNT_ALREADY_DELETED);
             }
@@ -150,7 +150,7 @@ class TransferSchedulerServiceImplUnitTest {
                 given(accountRepository.findByAccountNumber("222222")).willReturn(Optional.of(toAccount));
 
                 // when & then
-                assertThatThrownBy(() -> transferSchedulerService.saveScheduledTransfer(1L, "222222", amount, TransferType.ONCE, invalidTimeUnit, null))
+                assertThatThrownBy(() -> transferSchedulerService.saveScheduledTransfer(1L, "222222", amount, "ONCE", invalidTimeUnit, null))
                         .isInstanceOf(BusinessException.class)
                         .hasFieldOrPropertyWithValue("errorCode", ErrorCode.INVALID_TRANSFER_TIME_UNIT);
             }

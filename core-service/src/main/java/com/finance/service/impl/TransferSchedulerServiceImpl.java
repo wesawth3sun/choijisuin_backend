@@ -1,12 +1,12 @@
 package com.finance.service.impl;
 
+import com.finance.domain.model.e.TransferType;
 import com.finance.service.TransferSchedulerService;
 import com.finance.common.exception.BusinessException;
 import com.finance.common.exception.ErrorCode;
 import com.finance.domain.model.Account;
 import com.finance.domain.model.Money;
 import com.finance.domain.model.ScheduledTransfer;
-import com.finance.domain.model.TransferType;
 import com.finance.domain.repository.AccountRepository;
 import com.finance.domain.repository.ScheduledTransferRepository;
 import com.finance.service.dto.ReservationTimeResponse;
@@ -70,7 +70,7 @@ public class TransferSchedulerServiceImpl implements TransferSchedulerService {
      */
     @Transactional
     @Override
-    public void saveScheduledTransfer(Long fromAccountId, String toAccountNumber, Long amount, TransferType type, LocalDateTime executionTime, Integer recurringDay) {
+    public void saveScheduledTransfer(Long fromAccountId, String toAccountNumber, Long amount, String type, LocalDateTime executionTime, Integer recurringDay) {
         log.info("[SCHEDULED TRANSFER] 예약 이체 요청 - 계좌 ID: {}, 계좌 번호: {}, 금액: {}, 타입: {}, 시간: {}, 일자: {}",
                 fromAccountId, toAccountNumber, amount, type, executionTime, recurringDay);
 
@@ -89,7 +89,8 @@ public class TransferSchedulerServiceImpl implements TransferSchedulerService {
         }
 
         // 3. 시간 단위 유효성 검사 (스케줄러는 10분 단위로 작동하므로 정합성 유지)
-        if (type == TransferType.ONCE) {
+        TransferType transferType = TransferType.toTransferType(type);
+        if (transferType == TransferType.ONCE) {
             if (executionTime.getMinute() % 10 != 0) {
                 throw new BusinessException(ErrorCode.INVALID_TRANSFER_TIME_UNIT);
             }
@@ -100,7 +101,7 @@ public class TransferSchedulerServiceImpl implements TransferSchedulerService {
                 fromAccountId,
                 toAccountNumber,
                 new Money(BigDecimal.valueOf(amount)),
-                type,
+                transferType,
                 executionTime,
                 recurringDay
         );

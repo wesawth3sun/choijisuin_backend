@@ -1,4 +1,4 @@
-package com.finance.domain.model;
+package com.finance.domain.model.e;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

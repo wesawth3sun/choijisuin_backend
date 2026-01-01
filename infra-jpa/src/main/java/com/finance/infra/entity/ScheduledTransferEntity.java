@@ -1,7 +1,7 @@
 package com.finance.infra.entity;
 
-import com.finance.domain.model.TransferStatus;
-import com.finance.domain.model.TransferType;
+import com.finance.domain.model.e.TransferStatus;
+import com.finance.domain.model.e.TransferType;
 import jakarta.persistence.*;
 import lombok.*;
 

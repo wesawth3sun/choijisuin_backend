@@ -17,7 +17,7 @@ public interface AccountJpaRepository extends JpaRepository<AccountEntity, Long>
     // ID 로 조회시 비관적 락 적용
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("select a from AccountEntity a where a.id = :id")
-    Optional<AccountEntity> findByIdWithLock(Long id);
+    Optional<AccountEntity> findByIdWithLock(@Param("id") Long id);
 
     // 계좌 번호로 조회할 때 비관적 락 적용
     @Lock(LockModeType.PESSIMISTIC_WRITE)
