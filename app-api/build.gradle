@@ -1,5 +1,5 @@
 plugins {
-	id 'org.springframework.boot' // 실행 가능한 모듈에만 적용
+	id 'org.springframework.boot'
 }
 
 dependencies {
@@ -13,6 +13,7 @@ dependencies {
 	// 모든 모듈을 알고 있어야 하는 최종 조립 지점
 	implementation project(':common')
 	implementation project(':core-service')
+	implementation project(':core-domain')
 	implementation project(':infra-jpa')
 	implementation project(":infra-external")
 }

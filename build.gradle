@@ -1,6 +1,7 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '3.4.1'
+	// apply false를 추가하여 루트에서는 실행하지 않고 하위 모듈에 플러그인을 배포만 함
+	id 'org.springframework.boot' version '3.4.1' apply false
 	id 'io.spring.dependency-management' version '1.1.7'
 }
 
