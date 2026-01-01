@@ -1,6 +1,7 @@
 package com.finance.app_api.controller;
 
-import com.finance.app_api.dto.request.TransactionRequest;
+import com.finance.app_api.dto.request.TransactionDepositRequest;
+import com.finance.app_api.dto.request.TransactionWithdrawRequest;
 import com.finance.app_api.dto.request.TransferRequest;
 import com.finance.app_api.rsdata.RsData;
 import com.finance.service.TransactionService;
@@ -44,7 +45,7 @@ public class TransactionController {
     @PostMapping("/{accountId}/deposit")
     public ResponseEntity<RsData<String>> deposit(
             @PathVariable @Parameter(description = "계좌 식별자(ID)", example = "1") Long accountId,
-            @RequestBody @Validated TransactionRequest request) {
+            @RequestBody @Validated TransactionDepositRequest request) {
 
         transactionService.deposit(accountId, request.getAmount());
 
@@ -80,7 +81,7 @@ public class TransactionController {
     @PostMapping("/{accountId}/withdraw")
     public ResponseEntity<RsData<String>> withdraw(
             @PathVariable @Parameter(description = "계좌 식별자(ID)", example = "1") Long accountId,
-            @RequestBody @Validated TransactionRequest request) {
+            @RequestBody @Validated TransactionWithdrawRequest request) {
 
         transactionService.withdraw(accountId, request.getAmount());
 
@@ -136,6 +137,7 @@ public class TransactionController {
     public ResponseEntity<RsData<List<TransactionResponse>>> getHistory(
             @PathVariable @Parameter(description = "조회할 계좌 ID", example = "1") Long accountId,
             @RequestParam(defaultValue = "1") @Parameter(description = "페이지 번호 (1부터 시작)", example = "1") int page) {
+
         List<TransactionResponse> history = transactionService.getHistory(accountId, page);
 
         RsData<List<TransactionResponse>> response = new RsData<>(

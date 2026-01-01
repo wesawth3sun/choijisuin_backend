@@ -4,6 +4,7 @@ import com.finance.app_api.dto.response.ExchangeRateResponse;
 import com.finance.app_api.rsdata.RsData;
 import com.finance.service.ExchangeRateService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -30,8 +31,11 @@ public class ExchangeRateController {
     @GetMapping("/rate")
     @Operation(summary = "실시간 환율 조회", description = "Redis 캐시를 우선 조회하며, 없을 경우 외부 API를 호출합니다.")
     public ResponseEntity<RsData<ExchangeRateResponse>> getRate(
-            @RequestParam(defaultValue = "KRW") String from,
-            @RequestParam(defaultValue = "USD") String to) {
+            @Parameter(description = "기준 화폐 (예: KRW, USD)", example = "KRW")
+            @RequestParam(defaultValue = "USD") String from,
+
+            @Parameter(description = "대상 화폐 (예: KRW, USD)", example = "USD")
+            @RequestParam(defaultValue = "KRW") String to) {
 
         // 대문자로 정규화
         String fromCurrency = from.toUpperCase();

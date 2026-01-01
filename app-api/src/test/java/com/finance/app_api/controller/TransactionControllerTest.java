@@ -1,7 +1,7 @@
 package com.finance.app_api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.finance.app_api.dto.request.TransactionRequest;
+import com.finance.app_api.dto.request.TransactionDepositRequest;
 import com.finance.app_api.dto.request.TransferRequest;
 import com.finance.service.TransactionService;
 import com.finance.service.dto.TransactionResponse;
@@ -48,7 +48,7 @@ class TransactionControllerTest {
         void it_returns_200_when_deposit_success() throws Exception {
             // given
             Long accountId = 1L;
-            TransactionRequest request = new TransactionRequest(10000L);
+            TransactionDepositRequest request = new TransactionDepositRequest(10000L);
 
             // when & then
             mockMvc.perform(post("/api/v1/transactions/{accountId}/deposit", accountId)
