@@ -1,0 +1,34 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: banking-mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: banking_db
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  redis:
+    image: redis:alpine
+    container_name: banking-redis
+    restart: always
+    ports:
+      - "6379:6379"
+
+  app:
+    build: .
+    container_name: banking-app
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+      - redis
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+
+volumes:
+  mysql_data:
