@@ -1,4 +1,7 @@
 dependencies {
     implementation project(':core-domain')
-    implementation project(':infra-jpa')
+    implementation project(':common')
+
+    implementation 'org.springframework.boot:spring-boot-starter' // 스프링의 핵심 기능(Bean 관리, @Service 등)만 가져옴
+    implementation 'org.springframework:spring-tx' // 트랜잭션 기능만 추가
 }
