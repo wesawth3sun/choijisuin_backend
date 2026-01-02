@@ -20,6 +20,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * 한도 조회의 경우 = 일 누적합을 redis 에 캐싱해 두고, 분산락을 통해서 조회하도록 확장 가능
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -188,6 +191,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     private Account getAccount(Long accountId) {
+        // 비관적 락을 사용하여 계좌 조회
         return accountRepository.findByIdWithLock(accountId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.ACCOUNT_NOT_FOUND));
     }
