@@ -5,6 +5,8 @@ import com.finance.common.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.PessimisticLockingFailureException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -54,6 +56,34 @@ public class GlobalExceptionHandler {
         // 에러 응답 객체 생성
         ErrorResponse response = ErrorResponse.of("INVALID_INPUT", errorMessage);
 
+        return ResponseEntity.badRequest().body(response);
+    }
+
+    /**
+     * DB 비관적 락(Pessimistic Lock) 획득 실패 시 처리
+     */
+    @ExceptionHandler(PessimisticLockingFailureException.class)
+    public ResponseEntity<ErrorResponse> handlePessimisticLockingFailureException(PessimisticLockingFailureException e) {
+        log.error("[LOCK_EXCEPTION] 비관적 락 획득 실패: {}", e.getMessage());
+
+        ErrorResponse response = ErrorResponse.of(
+                "LOCK_TIMEOUT",
+                "현재 다른 사용자가 해당 데이터를 수정 중입니다. 잠시 후 다시 시도해주세요."
+        );
+        return ResponseEntity.status(409).body(response); // 409 Conflict
+    }
+
+    /**
+     * DB 제약 조건 위반 (Unique Key 중복 등) 처리
+     */
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ErrorResponse> handleDataIntegrityViolationException(DataIntegrityViolationException e) {
+        log.error("[DB_CONSTRAINT_EXCEPTION] 데이터 제약 조건 위반: {}", e.getMessage());
+
+        ErrorResponse response = ErrorResponse.of(
+                "DATA_INTEGRITY_VIOLATION",
+                "이미 존재하는 데이터이거나 입력 값이 올바르지 않습니다."
+        );
         return ResponseEntity.badRequest().body(response);
     }
 
