@@ -1,0 +1,68 @@
+# 원활한 테스트를 위해서 yml 을 포함
+
+spring:
+  profiles:
+    active: local  # 기본값은 로컬 환경
+    group:
+      local: common
+      prod: common
+
+---
+# [common] 공통 설정
+spring:
+  config:
+    activate:
+      on-profile: common
+  application:
+    name: banking-system
+  jpa:
+    open-in-view: false
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        default_batch_fetch_size: 100
+
+exchange:
+  api:
+    key: a9d1af12c164db444d1b8312
+
+---
+# [local] 로컬 개발 환경 (H2 사용)
+spring:
+  config:
+    activate:
+      on-profile: local
+  datasource:
+    url: jdbc:h2:mem:financeDB
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+  h2:
+    console:
+      enabled: true
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+---
+# [prod] 도커 배포 환경 (MySQL & Redis)
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    url: jdbc:mysql://db:3306/banking_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+  data:
+    redis:
+      host: redis
+      port: 6379
